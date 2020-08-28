@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import './question.dart';
-import './answer.dart';
+import './completed.dart';
+import './quiz-container.dart';
 void main() => runApp(App());
 
 class App extends StatefulWidget {
@@ -42,28 +42,23 @@ class _AppState extends State<App> {
     setState(() => questionIndex++);
     print('Pressed!');
   }
-  List<Widget> generatesQuestionList() {
-    List<Widget> result = [];
-    Question question = Question(this.questionKey[this.questionIndex]['question']);
-    result.add(question);
-    List<String> currentAnswers = this.questionKey[this.questionIndex]['answers'];
-    for(int i = 0; i < currentAnswers.length; i++) {
-      Answer answer = Answer(currentAnswers[i], this._handlePressed);
-      result.add(answer);
-    }
-    return result;
+  void _handleCompletedSurvey() {
+    setState(() => questionIndex = 0);
   }
   @override
   Widget build(BuildContext ctx) {
-    List<String> questions = ['What is your name?', 'How old are you?'];
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
           title: Text('Quizzerino'),
         ),
-        body: Column(
-          children: this.generatesQuestionList()
-        ),
+        body: this.questionKey.length == this.questionIndex
+        ? Completed(this._handleCompletedSurvey)
+        : Quiz(
+          this.questionKey[this.questionIndex]['question'],
+          this.questionKey[this.questionIndex]['answers'],
+          this._handlePressed
+        )
       ),
     );
   }
