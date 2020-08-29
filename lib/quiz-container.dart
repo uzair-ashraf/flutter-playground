@@ -2,19 +2,25 @@ import 'package:flutter/material.dart';
 
 import './question.dart';
 import './answer.dart';
+
 class Quiz extends StatelessWidget {
-  final List<String> answerList;
+  final List<dynamic> answerList;
   final String question;
   final Function handlePressed;
-  Quiz(this.question, this.answerList, this.handlePressed);
+  final bool isPressed;
+  Quiz(this.question, this.answerList, this.handlePressed, this.isPressed);
 
   @override
-  Widget build (BuildContext ctx) {
+  Widget build(BuildContext ctx) {
     return Column(
-          children: [
-            Question(this.question),
-            ...this.answerList.map((answer) => Answer(answer, this.handlePressed)).toList()
-          ]
-        );
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Question(this.question),
+          ...this
+              .answerList
+              .map((answer) => Answer(answer, this.handlePressed, isPressed))
+              .toList()
+        ]);
   }
 }
